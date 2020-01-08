@@ -5,10 +5,12 @@ import java.awt.event.MouseEvent;
 
 public class CanvasMouseListener {
     private CanvasDrawer drawer;
+    private BufferImageMaker maker;
     private MouseAdapter listener;
 
     public CanvasMouseListener(MainCanvas canvas) {
         drawer = new CanvasDrawer(canvas);
+        maker = new BufferImageMaker(canvas);
         createListener(canvas);
     }
 
@@ -22,6 +24,11 @@ public class CanvasMouseListener {
                 canvas.setPrevY(canvas.getY());
 
                 drawer.drawCanvas();
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                maker.make();
             }
         };
 

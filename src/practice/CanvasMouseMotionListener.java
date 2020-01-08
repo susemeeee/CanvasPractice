@@ -7,10 +7,12 @@ import java.awt.event.MouseMotionListener;
 
 public class CanvasMouseMotionListener {
     private CanvasDrawer drawer;
+    private BufferImageMaker maker;
     private MouseMotionListener listener;
 
     public CanvasMouseMotionListener(MainCanvas canvas) {
         drawer = new CanvasDrawer(canvas);
+        maker = new BufferImageMaker(canvas);
         createListener(canvas);
     }
 
