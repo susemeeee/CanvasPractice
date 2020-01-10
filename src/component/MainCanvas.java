@@ -17,7 +17,6 @@ public class MainCanvas {
         canvas.setBackground(backgroundColor);
         canvas.setBounds(50, 0, 800, 600);
 
-        //new CanvasMouseMotionListener(this);
         listener = new CanvasMouseListener(this);
     }
 

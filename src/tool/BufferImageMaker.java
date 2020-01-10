@@ -27,9 +27,11 @@ public class BufferImageMaker {
     }
 
     public void make() {
-        Graphics2D g = (Graphics2D) image.getGraphics();
-        //canvas.getCanvas().printAll(g);
-        g.drawImage(image, 50, 0, null);
+        Graphics2D g = (Graphics2D) image.createGraphics();
+        g.setBackground(canvas.getBackgroundColor());
+        g.setColor(canvas.getListener().getDrawer().getColor());
+        g.setStroke(new BasicStroke(10, BasicStroke.CAP_ROUND, 0));
+        g.drawLine(canvas.getPrevX(), canvas.getPrevY(), canvas.getX(), canvas.getY());
         g.dispose();
 
         try {

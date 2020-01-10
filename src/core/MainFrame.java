@@ -1,4 +1,4 @@
-package practice;
+package core;
 
 import component.LeftPanel;
 import component.RightPanel;

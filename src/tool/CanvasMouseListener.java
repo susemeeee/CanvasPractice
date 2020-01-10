@@ -18,7 +18,7 @@ public class CanvasMouseListener {
         createListener(canvas);
     }
 
-    private void createListener(MainCanvas canvas) {
+    public void createListener(MainCanvas canvas) {
         mouseAdapter = new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -27,7 +27,7 @@ public class CanvasMouseListener {
                 canvas.setPrevX(canvas.getX());
                 canvas.setPrevY(canvas.getY());
 
-                //drawer.drawCanvas();
+                drawer.drawCanvas();
             }
         };
 
