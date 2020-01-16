@@ -1,23 +1,28 @@
 package component;
 
+import core.ColorArray;
 import tool.CanvasMouseListener;
 
 import java.awt.*;
 
 public class MainCanvas {
     private Canvas canvas = new Canvas();
-    private Color backgroundColor = new Color(Color.WHITE.getRGB());
+    private Color backgroundColor = new Color(255,255,255);
     private int x;
     private int y;
     private int prevX;
     private int prevY;
     private CanvasMouseListener listener;
 
+    private ColorArray canvasColorInfoArray;
+
     public MainCanvas() {
         canvas.setBackground(backgroundColor);
         canvas.setBounds(50, 0, 800, 600);
 
         listener = new CanvasMouseListener(this);
+
+        canvasColorInfoArray = new ColorArray(canvas.getWidth(), canvas.getHeight());
     }
 
     public Canvas getCanvas() {
@@ -46,6 +51,10 @@ public class MainCanvas {
 
     public Color getBackgroundColor() {
         return backgroundColor;
+    }
+
+    public ColorArray getCanvasColorInfoArray() {
+        return canvasColorInfoArray;
     }
 
     public void setX(int x) {

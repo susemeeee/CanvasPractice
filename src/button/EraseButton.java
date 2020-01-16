@@ -4,6 +4,7 @@ import tool.ColorChanger;
 import component.MainCanvas;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class EraseButton {
     private JButton button;
@@ -14,7 +15,8 @@ public class EraseButton {
         button.setLocation(10, 50);
         button.setVisible(true);
         button.addActionListener(e -> {
-            ColorChanger.changeColor(canvas.getBackgroundColor(), canvas);
+            Color backColor = canvas.getBackgroundColor();
+            ColorChanger.changeColor(new Color(backColor.getRed(), backColor.getGreen(), backColor.getBlue(), 255), canvas);
         });
     }
 
