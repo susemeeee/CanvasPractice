@@ -13,6 +13,8 @@ public class CanvasMouseListener {
     private MouseAdapter mouseAdapter;
     private MouseMotionAdapter mouseMotionAdapter;
 
+
+
     public CanvasMouseListener(MainCanvas canvas) {
         drawer = new CanvasDrawer(canvas);
         maker = new BufferImageMaker(canvas);
@@ -28,6 +30,7 @@ public class CanvasMouseListener {
                 canvas.setPrevX(canvas.getX());
                 canvas.setPrevY(canvas.getY());
 
+                drawer.writePixel();
                 drawer.drawCanvas();
                 maker.make();
             }
@@ -41,6 +44,7 @@ public class CanvasMouseListener {
                 canvas.setX(e.getX());
                 canvas.setY(e.getY());
 
+                drawer.writePixel();
                 drawer.drawCanvas();
                 maker.make();
             }
@@ -53,4 +57,6 @@ public class CanvasMouseListener {
     public CanvasDrawer getDrawer() {
         return drawer;
     }
+
+
 }

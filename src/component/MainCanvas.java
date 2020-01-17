@@ -4,6 +4,7 @@ import core.ColorArray;
 import tool.CanvasMouseListener;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class MainCanvas {
     private Canvas canvas = new Canvas();
@@ -13,8 +14,8 @@ public class MainCanvas {
     private int prevX;
     private int prevY;
     private CanvasMouseListener listener;
-
     private ColorArray canvasColorInfoArray;
+    private int[] pixels;
 
     public MainCanvas() {
         canvas.setBackground(backgroundColor);
@@ -23,6 +24,12 @@ public class MainCanvas {
         listener = new CanvasMouseListener(this);
 
         canvasColorInfoArray = new ColorArray(canvas.getWidth(), canvas.getHeight());
+
+        pixels = new int[canvas.getWidth() * canvas.getHeight()];
+
+        for(int i = 0; i < pixels.length; i++) {
+            pixels[i] = 0xffffffff;
+        }
     }
 
     public Canvas getCanvas() {
@@ -57,6 +64,10 @@ public class MainCanvas {
         return canvasColorInfoArray;
     }
 
+    public int[] getPixels() {
+        return pixels;
+    }
+
     public void setX(int x) {
         this.x = x;
     }
@@ -71,5 +82,9 @@ public class MainCanvas {
 
     public void setPrevY(int prevY) {
         this.prevY = prevY;
+    }
+
+    public void setPixels(int index, int pixelData) {
+        pixels[index] = pixelData;
     }
 }

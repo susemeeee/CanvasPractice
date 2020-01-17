@@ -7,6 +7,9 @@ import core.RGB;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
+import java.nio.Buffer;
 
 public class CanvasDrawer {
     private MainCanvas canvas;
@@ -19,39 +22,43 @@ public class CanvasDrawer {
 
     public void drawCanvas() {
         bufferCanvas = canvas.getCanvas().getBufferStrategy();
+        BufferedImage image = new BufferedImage(canvas.getCanvas().getWidth(), canvas.getCanvas().getHeight(), BufferedImage.TYPE_INT_ARGB);
 
         if(bufferCanvas == null) {
             canvas.getCanvas().createBufferStrategy(2);
             return;
         }
 
+        int[] newPixel;
+
+        newPixel = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+
+        for(int i = 0; i < newPixel.length; i++) {
+            newPixel[i] = canvas.getPixels()[i];
+        }
+
         Graphics2D g = (Graphics2D) bufferCanvas.getDrawGraphics();
-        writePixel(g);
+        g.drawImage(image, 0, 0, canvas.getCanvas());
         g.dispose();
         bufferCanvas.show();
     }
 
-    public void writePixel(Graphics2D g) {
+    public void writePixel() {
         boolean isPlusX = (canvas.getPrevX() < canvas.getX());
         boolean isPlusY = (canvas.getPrevY() < canvas.getY());
         int currentX = canvas.getPrevX();
         int currentY = canvas.getPrevY();
         int deltaX = Math.abs(canvas.getX() - canvas.getPrevX());
         int deltaY = Math.abs(canvas.getY() - canvas.getPrevY());
-        g.setStroke(new BasicStroke(3, BasicStroke.CAP_ROUND, 0));
 
         if(deltaX == 0 && deltaY == 0) {
-            canvas.getCanvasColorInfoArray().setColorInfo(currentX, currentY, color);
-            g.setColor(canvas.getCanvasColorInfoArray().getColorInfo()[currentY][currentX].makeColor());
-            g.drawLine(currentX, currentY, currentX + 1, currentY + 1);
+            canvas.setPixels(canvas.getCanvas().getWidth()* currentY + currentX, color.getRGB());
             return;
         }
 
         if(deltaX == 0) {
             while(currentY != canvas.getY()) {
-                canvas.getCanvasColorInfoArray().setColorInfo(currentX, currentY, color);
-                g.setColor(canvas.getCanvasColorInfoArray().getColorInfo()[currentY][currentX].makeColor());
-                g.drawLine(currentX, currentY, currentX + 1, currentY + 1);
+                canvas.setPixels(canvas.getCanvas().getWidth()* currentY + currentX, color.getRGB());
 
                 if(isPlusY) {
                     currentY++;
@@ -66,9 +73,7 @@ public class CanvasDrawer {
 
         if(deltaY == 0) {
             while(currentX != canvas.getX()) {
-                canvas.getCanvasColorInfoArray().setColorInfo(currentX, currentY, color);
-                g.setColor(canvas.getCanvasColorInfoArray().getColorInfo()[currentY][currentX].makeColor());
-                g.drawLine(currentX, currentY, currentX + 1, currentY + 1);
+                canvas.setPixels(canvas.getCanvas().getWidth()* currentY + currentX, color.getRGB());
 
                 if(isPlusX) {
                     currentX++;
@@ -92,9 +97,7 @@ public class CanvasDrawer {
         }
 
         while((currentX != canvas.getX()) && (currentY != canvas.getY())) {
-            canvas.getCanvasColorInfoArray().setColorInfo(currentX, currentY, color);
-            g.setColor(canvas.getCanvasColorInfoArray().getColorInfo()[currentY][currentX].makeColor());
-            g.drawLine(currentX, currentY, currentX + 1, currentY + 1);
+            canvas.setPixels(canvas.getCanvas().getWidth()* currentY + currentX, color.getRGB());
 
             if((count >= (int)ratio)) {
                 if(deltaX > deltaY) {
@@ -115,6 +118,14 @@ public class CanvasDrawer {
                 }
 
                 count = 0;
+                deltaX = Math.abs(canvas.getX() - currentX);
+                deltaY = Math.abs(canvas.getY() - currentY);
+                if(deltaX > deltaY) {
+                    ratio = deltaX / deltaY;
+                }
+                else {
+                    ratio = deltaY / deltaX;
+                }
             }
             else {
                 if (deltaX > deltaY) {
